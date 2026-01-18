@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zorpid | Coming Soon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="family">
+    <style>
+        :root {
+            --brand-dark: #0f172a;
+            --brand-light: #f8fafc;
+            --accent: #334155;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--brand-light);
+            color: var(--brand-dark);
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #0f172a, #64748b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-card {
+            transition: all 0.4s ease;
+            border: 1px solid transparent;
+        }
+
+        .brand-card:hover {
+            border-color: #e2e8f0;
+            background: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .cursor-custom {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--brand-dark);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .cursor-custom { display: block; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="cursor" class="cursor-custom"></div>
+
+    <nav class="fixed top-0 w-full p-8 flex justify-between items-center z-50">
+        <div class="text-xl font-semibold tracking-tighter fade-in" id="nav-logo">ZORPID</div>
+        <div class="text-xs uppercase tracking-[0.2em] text-slate-500 fade-in" id="nav-status">
+            <span class="status-dot"></span> Under Processing
+        </div>
+    </nav>
+
+    <main class="min-h-screen flex flex-col items-center justify-center px-6 pt-32 pb-20">
+        <!-- Hero Section -->
+        <section class="max-w-4xl w-full text-center mb-24">
+            <h2 class="text-sm uppercase tracking-[0.3em] text-slate-400 mb-6 fade-in">Coming Soon</h2>
+            <h1 class="serif text-5xl md:text-7xl font-light mb-8 leading-tight fade-in">
+                Designing the future of <br>
+                <span class="gradient-text italic">Healthcare, AI & Education.</span>
+            </h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed fade-in">
+                Zorpid (ZRP) is building an integrated ecosystem of intelligent diagnostics, academic excellence, and holistic wellness. Our digital home is currently being refined.
+            </p>
+        </section>
+
+        <!-- Brands Grid -->
+        <section class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in">
+            <div class="brand-card p-8 rounded-2xl">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400">01</span>
+                <h3 class="serif text-xl mt-4 mb-2">Zorpid Diagnostics Labs</h3>
+                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Clarity you can trust.</h4>
+                <p class="text-sm text-slate-500 leading-relaxed">Accurate diagnostics delivering clarity, confidence, and care for better health decisions.</p>
+            </div>
+            <div class="brand-card p-8 rounded-2xl">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400">02</span>
+                <h3 class="serif text-xl mt-4 mb-2">Zorpid Wellness</h3>
+                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Better health, everyday.</h4>
+                <p class="text-sm text-slate-500 leading-relaxed">Holistic wellness solutions designed to improve everyday health, balance, and longevity.</p>
+            </div>
+            <div class="brand-card p-8 rounded-2xl">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400">03</span>
+                <h3 class="serif text-xl mt-4 mb-2">Zorpid Wellness Academy</h3>
+                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Learn health. Live better.</h4>
+                <p class="text-sm text-slate-500 leading-relaxed">Educating minds to understand health, wellness science, and lifelong well-being practices.</p>
+            </div>
+            <div class="brand-card p-8 rounded-2xl">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400">04</span>
+                <h3 class="serif text-xl mt-4 mb-2">Zorpid AI</h3>
+                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Intelligence that works.</h4>
+                <p class="text-sm text-slate-500 leading-relaxed">Advanced artificial intelligence systems built to solve real-world problems responsibly.</p>
+            </div>
+            <div class="brand-card p-8 rounded-2xl">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400">05</span>
+                <h3 class="serif text-xl mt-4 mb-2">Zorpid AI Academy</h3>
+                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Learn the future, today.</h4>
+                <p class="text-sm text-slate-500 leading-relaxed">Empowering learners with practical artificial intelligence skills for tomorrow’s industries.</p>
+            </div>
+            <div class="brand-card p-8 rounded-2xl">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400">06</span>
+                <h3 class="serif text-xl mt-4 mb-2">Zorpid AI Labs</h3>
+                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Research. Build. Advance.</h4>
+                <p class="text-sm text-slate-500 leading-relaxed">Research-driven innovation advancing artificial intelligence through experimentation and applied science.</p>
+            </div>
+            <div class="brand-card p-8 rounded-2xl">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400"></span>
+                <h3 class="serif text-xl mt-4 mb-2"></h3>
+                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic"></h4>
+                <p class="text-sm text-slate-500 leading-relaxed"></p>
+            </div>
+            <div class="brand-card p-8 rounded-2xl flex items-center justify-center bg-slate-900 text-white">
+                <div class="text-center">
+                    <p class="text-xs uppercase tracking-widest opacity-60">Inquiries</p>
+                    <a href="mailto:hello.zorpid@gmail.com" class="text-sm hover:underline mt-2 inline-block">hello.zorpid@gmail.com</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="p-12 text-center border-t border-slate-100 fade-in">
+        <p class="text-[10px] uppercase tracking-[0.4em] text-slate-400">
+            &copy; <script>document.write(new Date().getFullYear())</script> ZORPID. All Rights Reserved.
+        </p>
+    </footer>
+
+    <script>
+        // Reveal Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 100);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            elements.forEach(el => observer.observe(el));
+        });
+
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+        });
+
+        // Hover effect for cursor
+        const interactiveElements = document.querySelectorAll('a, .brand-card');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(2)';
+                cursor.style.background = 'rgba(15, 23, 42, 0.05)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.background = 'transparent';
+            });
+        });
+    </script>
+</body>
+</html>
