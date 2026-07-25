@@ -1,227 +1,485 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Zorpid (ZRP) is building an integrated ecosystem of intelligent diagnostics, academic excellence, and holistic wellness. Our digital home is currently being refined.">
-    <title>Zorpid | Healthcare, AI & Education</title>
+    <title>Zorpid — Everything is Connected</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#064e3b',
+                            darkBg: '#090D14',
+                            darkCard: '#111827',
+                            lightBg: '#FAFCFC',
+                            lightCard: '#FFFFFF',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="family">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        :root {
-            --brand-dark: #0f172a;
-            --brand-light: #f8fafc;
-            --accent: #334155;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--brand-light);
-            color: var(--brand-dark);
-            overflow-x: hidden;
-            margin: 0;
-        }
-
-        .serif {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .gradient-text {
-            background: linear-gradient(90deg, #0f172a, #64748b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .brand-card {
-            transition: all 0.4s ease;
-            border: 1px solid transparent;
-        }
-
-        .brand-card:hover {
-            border-color: #e2e8f0;
-            background: #ffffff;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
-        }
-
-        .status-dot {
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-            animation: pulse 2s infinite;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(156, 163, 175, 0.5);
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-            100% { opacity: 1; transform: scale(1); }
+        /* Subtle glowing background pulse */
+        @keyframes floatGlow {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.25; }
+            50% { transform: translateY(-15px) scale(1.05); opacity: 0.4; }
+        }
+        .glow-effect {
+            animation: floatGlow 8s ease-in-out infinite;
         }
 
-        .cursor-custom {
-            width: 20px;
-            height: 20px;
-            border: 1px solid var(--brand-dark);
-            border-radius: 50%;
+        /* Smooth glassmorphism */
+        .glass-panel {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        /* Subtle underline animation */
+        .hover-underline {
+            position: relative;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+
+        /* Canvas positioning */
+        #interactive-canvas {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
             pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
-            display: none;
-        }
-
-        @media (min-width: 1024px) {
-            .cursor-custom { display: block; }
         }
     </style>
 </head>
-<body class="antialiased">
-    <div id="cursor" class="cursor-custom"></div>
+<body class="bg-brand-lightBg text-slate-800 dark:bg-brand-darkBg dark:text-slate-100 font-sans transition-colors duration-500 min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-emerald-500 selection:text-white">
 
-    <nav class="top-0 w-full p-8 flex justify-between items-center z-50">
-        <div class="text-xl font-semibold tracking-tighter fade-in" id="nav-logo">ZORPID</div>
-        <div class="text-xs uppercase tracking-[0.2em] text-slate-500 fade-in" id="nav-status">
-            <span class="status-dot"></span> Under Processing
-        </div>
-    </nav>
+    <!-- Interactive Background Canvas (Node graph for "Everything is Connected") -->
+    <canvas id="interactive-canvas"></canvas>
 
-    <main class="min-h-screen flex flex-col items-center justify-center px-6 pt-32 pb-20">
-        <!-- Hero Section -->
-        <section class="max-w-4xl w-full text-center mb-24">
-            <h2 class="text-sm uppercase tracking-[0.3em] text-slate-400 mb-6 fade-in">Coming Soon</h2>
-            <h1 class="serif text-5xl md:text-7xl font-light mb-8 leading-tight fade-in">
-                Designing the future of <br>
-                <span class="gradient-text italic">Healthcare, AI & Education.</span>
-            </h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed fade-in">
-                Zorpid (ZRP) is building an integrated ecosystem of intelligent diagnostics, academic excellence, and holistic wellness. Our digital home is currently being refined.
-            </p>
-        </section>
+    <!-- Background Ambient Light Spheres -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="glow-effect absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-emerald-500/20 via-teal-500/10 to-indigo-500/20 rounded-full blur-3xl"></div>
+        <div class="glow-effect absolute bottom-0 right-0 w-[450px] h-[450px] bg-gradient-to-br from-indigo-500/10 via-emerald-500/10 to-teal-500/15 rounded-full blur-3xl" style="animation-delay: -4s;"></div>
+    </div>
 
-        <!-- Brands Grid -->
-        <section class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in">
-            <div class="brand-card p-8 rounded-2xl">
-                <span class="text-[10px] uppercase tracking-widest text-slate-400">01</span>
-                <h3 class="serif text-xl mt-4 mb-2"><a href="https://diagnostics.zorpid.com/">Zorpid Diagnostics</a></h3>
-                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Clarity you can trust.</h4>
-                <p class="text-sm text-slate-500 leading-relaxed">Accurate diagnostics delivering clarity, confidence, and care for better health decisions.</p>
+    <!-- Main Container Wrapper -->
+    <div class="relative z-10 flex flex-col min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Top Navigation / Header -->
+        <header class="py-6 sm:py-8 flex items-center justify-between border-b border-slate-200/50 dark:border-slate-800/60 transition-colors">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-atom text-xl"></i>
+                </div>
+                <span class="font-serif tracking-widest text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-slate-200 dark:to-slate-400">
+                    ZORPID
+                </span>
             </div>
-            <div class="brand-card p-8 rounded-2xl">
-                <span class="text-[10px] uppercase tracking-widest text-slate-400">02</span>
-                <h3 class="serif text-xl mt-4 mb-2">Zorpid Wellness</h3>
-                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Better health, everyday.</h4>
-                <p class="text-sm text-slate-500 leading-relaxed">Holistic wellness solutions designed to improve everyday health, balance, and longevity.</p>
-            </div>
-            <div class="brand-card p-8 rounded-2xl">
-                <span class="text-[10px] uppercase tracking-widest text-slate-400">03</span>
-                <h3 class="serif text-xl mt-4 mb-2">Zorpid Wellness Academy</h3>
-                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Learn health. Live better.</h4>
-                <p class="text-sm text-slate-500 leading-relaxed">Educating minds to understand health, wellness science, and lifelong well-being practices.</p>
-            </div>
-            <div class="brand-card p-8 rounded-2xl">
-                <span class="text-[10px] uppercase tracking-widest text-slate-400">04</span>
-                <h3 class="serif text-xl mt-4 mb-2">Zorpid AI</h3>
-                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Intelligence that works.</h4>
-                <p class="text-sm text-slate-500 leading-relaxed">Advanced artificial intelligence systems built to solve real-world problems responsibly.</p>
-            </div>
-            <div class="brand-card p-8 rounded-2xl">
-                <span class="text-[10px] uppercase tracking-widest text-slate-400">05</span>
-                <h3 class="serif text-xl mt-4 mb-2">Zorpid AI Academy</h3>
-                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Learn the future, today.</h4>
-                <p class="text-sm text-slate-500 leading-relaxed">Empowering learners with practical artificial intelligence skills for tomorrow’s industries.</p>
-            </div>
-            <div class="brand-card p-8 rounded-2xl">
-                <span class="text-[10px] uppercase tracking-widest text-slate-400">06</span>
-                <h3 class="serif text-xl mt-4 mb-2">Zorpid AI Labs</h3>
-                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic">Research. Build. Advance.</h4>
-                <p class="text-sm text-slate-500 leading-relaxed">Research-driven innovation advancing artificial intelligence through experimentation and applied science.</p>
-            </div>
-            <div class="brand-card p-8 rounded-2xl">
-                <span class="text-[10px] uppercase tracking-widest text-slate-400"></span>
-                <h3 class="serif text-xl mt-4 mb-2"></h3>
-                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic"></h4>
-                <p class="text-sm text-slate-500 leading-relaxed"></p>
-            </div>
-            <div class="brand-card p-8 rounded-2xl flex items-center justify-center bg-slate-900 text-white">
-                <div class="text-center">
-                    <p class="text-xs uppercase tracking-widest opacity-60">Inquiries</p>
-                    <a href="mailto:hello.zorpid@gmail.com" class="text-sm hover:underline mt-2 inline-block">hello.zorpid@gmail.com</a>
+
+            <div class="flex items-center space-x-4">
+                <!-- Theme Switch Button -->
+                <button id="theme-toggle" aria-label="Toggle Theme" class="p-2.5 rounded-full glass-panel bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition-all duration-300 shadow-sm focus:outline-none">
+                    <i id="theme-icon-sun" class="fa-solid fa-sun hidden text-amber-400 text-lg"></i>
+                    <i id="theme-icon-moon" class="fa-solid fa-moon text-indigo-400 text-lg"></i>
+                </button>
+
+                <!-- Status Indicator Badge -->
+                <div class="hidden sm:flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-400/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-medium tracking-wide">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span>UNDER DEVELOPMENT</span>
                 </div>
             </div>
-            <div class="brand-card p-8 rounded-2xl">
-                <span class="text-[10px] uppercase tracking-widest text-slate-400"></span>
-                <h3 class="serif text-xl mt-4 mb-2"></h3>
-                <h4 class="text-xs text-slate-400 mb-2 uppercase tracking-tighter italic"></h4>
-                <p class="text-sm text-slate-500 leading-relaxed"></p>
-            </div>
-        </section>
-    </main>
+        </header>
 
-    <footer class="p-12 text-center border-t border-slate-100 fade-in">
-        <p class="text-[10px] uppercase tracking-[0.4em] text-slate-400">
-            &copy; <script>document.write(new Date().getFullYear())</script> ZORPID. All Rights Reserved.
-        </p>
-    </footer>
+        <!-- Hero Section -->
+        <main class="my-auto py-12 lg:py-16 flex flex-col items-center text-center">
+            
+            <!-- Mobile status badge -->
+            <div class="sm:hidden mb-6 flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-400/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-medium tracking-wide">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>UNDER DEVELOPMENT</span>
+            </div>
+
+            <!-- Pre-heading Pill -->
+            <p class="text-xs uppercase tracking-[0.3em] font-semibold text-emerald-600 dark:text-emerald-400 mb-4">
+                Pioneering Next-Gen Health Ecosystems
+            </p>
+
+            <!-- Main Title -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-serif font-bold tracking-tight text-slate-900 dark:text-white max-w-4xl leading-tight">
+                Architecting the Future of Living Systems
+            </h1>
+
+            <!-- Tagline -->
+            <p class="mt-6 text-xl sm:text-2xl md:text-3xl font-light italic font-serif text-slate-600 dark:text-slate-300 tracking-wide">
+                “<span class="bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-600 dark:from-emerald-400 dark:via-teal-300 dark:to-indigo-400 bg-clip-text text-transparent font-medium">Everything is Connected</span>”
+            </p>
+
+            <!-- Core Values Pills -->
+            <div class="mt-8 flex flex-wrap justify-center items-center gap-3 sm:gap-4 text-xs sm:text-sm font-medium">
+                <span class="px-4 py-2 rounded-full glass-panel bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-heart-pulse text-emerald-500"></i> Wellness
+                </span>
+                <span class="text-slate-300 dark:text-slate-700">•</span>
+                <span class="px-4 py-2 rounded-full glass-panel bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-microchip text-teal-500"></i> DeepTech
+                </span>
+                <span class="text-slate-300 dark:text-slate-700">•</span>
+                <span class="px-4 py-2 rounded-full glass-panel bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-leaf text-indigo-500"></i> Sustainability
+                </span>
+            </div>
+
+            <!-- Sub-Brands Showcase Section -->
+            <div class="w-full mt-16 sm:mt-20">
+                <div class="text-center mb-8">
+                    <h2 class="text-xs uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500 font-semibold">
+                        Our Divisions & Works
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                    
+                    <!-- Zorpid Diagnostics Card -->
+                    <div class="group relative rounded-2xl glass-panel bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 p-6 sm:p-8 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/5">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-dna text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-serif text-slate-900 dark:text-white mb-2 group-hover:text-emerald-500 transition-colors">
+                            Zorpid Diagnostics
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Precision biomarker detection and real-time intelligent monitoring to anticipate cellular changes before symptoms manifest.
+                        </p>
+                        <div class="pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                            <span><a href="https://diagnostics.zorpid.com" target="_blank">Zorpid Diagnostics</a></span>
+                            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Zorpid Genetics Card -->
+                    <div class="group relative rounded-2xl glass-panel bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 p-6 sm:p-8 hover:border-teal-500/50 dark:hover:border-teal-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/5">
+                        <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-network-wired text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-serif text-slate-900 dark:text-white mb-2 group-hover:text-teal-500 transition-colors">
+                            Zorpid Genetics
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Unlocking longevity and optimized cellular function through multi-omics sequencing and individualized gene mapping.
+                        </p>
+                        <div class="pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center text-xs font-semibold text-teal-600 dark:text-teal-400">
+                            <span><a href="https://genetics.zorpid.com" target="_blank">Zorpid Genetics</a></span>
+                            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Zorpid Wellness Card -->
+                    <div class="group relative rounded-2xl glass-panel bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 p-6 sm:p-8 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/5">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-seedling text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-serif text-slate-900 dark:text-white mb-2 group-hover:text-indigo-500 transition-colors">
+                            Zorpid Wellness
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Sustainable, human-centric wellness formulations and longevity protocols designed for biological harmony.
+                        </p>
+                        <div class="pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                            <span><a href="https://wellness.zorpid.com" target="_blank">Zorpid Wellness</a></span>
+                            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Stay Updated / Early Access Section -->
+            <!-- <div class="w-full max-w-xl mt-16 sm:mt-20 glass-panel bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-slate-900/5">
+                <h3 class="text-lg sm:text-xl font-bold font-serif text-slate-900 dark:text-white">
+                    Be First to Experience Zorpid
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 mb-6">
+                    We are synthesizing breakthroughs across biological science and computational tech. Subscribe for early access updates.
+                </p>
+
+                <form id="subscribe-form" class="flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input 
+                            type="email" 
+                            id="email-input" 
+                            required 
+                            placeholder="Enter your professional email" 
+                            class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                        >
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white dark:text-slate-950 font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 group cursor-pointer"
+                    >
+                        <span>Notify Me</span>
+                        <i class="fa-solid fa-paper-plane text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                    </button>
+                </form>
+
+                Feedback Toast / Message Container -->
+                <!-- <div id="subscribe-message" class="hidden mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs text-center font-medium">
+                    <i class="fa-solid fa-circle-check mr-1.5"></i>
+                    Thank you! You have been added to our exclusive preview queue.
+                </div> -->
+            <!-- </div> -->
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-8 border-t border-slate-200/50 dark:border-slate-800/60 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-500 gap-4">
+            <div class="flex items-center space-x-2">
+                <span class="font-serif font-bold text-slate-700 dark:text-slate-400">ZORPID</span>
+                <span>© <span id="current-year">2026</span> All Rights Reserved.</span>
+            </div>
+
+            <div class="flex items-center space-x-6">
+                <!-- <a href="#subscribe-form" class="hover-underline hover:text-slate-800 dark:hover:text-slate-300 transition-colors">Contact Inquiry</a> -->
+                <span class="text-slate-300 dark:text-slate-800">•</span>
+                <span class="text-slate-400 dark:text-slate-600">Wellness | DeepTech | Sustainability</span>
+            </div>
+        </footer>
+
+    </div>
 
     <script>
-        // Reveal Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            const elements = document.querySelectorAll('.fade-in');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, index * 100);
+        // Set dynamic current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-icon-sun');
+        const moonIcon = document.getElementById('theme-icon-moon');
+        const htmlElement = document.documentElement;
+
+        // System Preference / LocalStorage Setup
+        function initTheme() {
+            const savedTheme = localStorage.getItem('zorpid-theme');
+            if (savedTheme === 'light' || (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+                enableLightMode();
+            } else {
+                enableDarkMode();
+            }
+        }
+
+        function enableDarkMode() {
+            htmlElement.classList.add('dark');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+            localStorage.setItem('zorpid-theme', 'dark');
+            if (window.updateCanvasColors) window.updateCanvasColors(true);
+        }
+
+        function enableLightMode() {
+            htmlElement.classList.remove('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+            localStorage.setItem('zorpid-theme', 'light');
+            if (window.updateCanvasColors) window.updateCanvasColors(false);
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                enableLightMode();
+            } else {
+                enableDarkMode();
+            }
+        });
+
+        initTheme();
+
+        // Canvas Interactive Connected Nodes ("Everything is Connected")
+        const canvas = document.getElementById('interactive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        let isDark = htmlElement.classList.contains('dark');
+
+        window.updateCanvasColors = function(darkState) {
+            isDark = darkState;
+        };
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.radius = Math.random() * 1.8 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = isDark ? 'rgba(52, 211, 153, 0.5)' : 'rgba(16, 185, 129, 0.4)';
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            // Particle density proportional to screen size
+            const particleCount = Math.floor((width * height) / 18000);
+            for (let i = 0; i < Math.min(particleCount, 75); i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        // Mouse Interactivity
+        let mouse = { x: null, y: null, radius: 150 };
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Connect nearby particles
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 130) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        const opacity = (1 - distance / 130) * (isDark ? 0.25 : 0.15);
+                        ctx.strokeStyle = isDark ? `rgba(52, 211, 153, ${opacity})` : `rgba(16, 185, 129, ${opacity})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
                     }
-                });
-            }, { threshold: 0.1 });
+                }
 
-            elements.forEach(el => observer.observe(el));
-        });
+                // Connect to mouse cursor
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dx = particles[i].x - mouse.x;
+                    const dy = particles[i].y - mouse.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+                    if (distance < mouse.radius) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        const opacity = (1 - distance / mouse.radius) * (isDark ? 0.4 : 0.25);
+                        ctx.strokeStyle = isDark ? `rgba(20, 184, 166, ${opacity})` : `rgba(13, 148, 136, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
 
-        document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'scale(0.8)';
-        });
+            requestAnimationFrame(animateCanvas);
+        }
 
-        document.addEventListener('mouseup', () => {
-            cursor.style.transform = 'scale(1)';
-        });
+        window.addEventListener('resize', resizeCanvas);
+        
+        window.onload = function() {
+            resizeCanvas();
+            animateCanvas();
+        };
 
-        // Hover effect for cursor
-        const interactiveElements = document.querySelectorAll('a, .brand-card');
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(2)';
-                cursor.style.background = 'rgba(15, 23, 42, 0.05)';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.background = 'transparent';
-            });
+        // Subscriber Form Logic
+        const subscribeForm = document.getElementById('subscribe-form');
+        const emailInput = document.getElementById('email-input');
+        const subscribeMessage = document.getElementById('subscribe-message');
+
+        subscribeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (emailInput.value) {
+                subscribeMessage.classList.remove('hidden');
+                emailInput.value = '';
+                setTimeout(() => {
+                    subscribeMessage.classList.add('hidden');
+                }, 6000);
+            }
         });
     </script>
 </body>
